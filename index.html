@@ -8,7 +8,143 @@
 </head>
 <body>
     <div>
-        <button>Pay</button>
+        <p id="status"></p>
+        <button id="pay">Pay</button>
+        <button id="confirm">Confirm Delivery</button>
+        <button id="refund">Request Refund</button>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="./web3.min.js"></script>
+
+    <script>
+        var contract;
+
+        $(document).ready(function() {
+            initialize();
+        })
+
+        function initialize() {
+            web3 = new Web3(web3.currentProvider);
+            var address = "0x8046085fb6806caa9b19a4cd7b3cd96374dd9573";
+            var abi = [
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "confirmReceipt",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "pay",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "refund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "_buyer",
+				"type": "address"
+			},
+			{
+				"internalType": "address payable",
+				"name": "_seller",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_controller",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "buyer",
+		"outputs": [
+			{
+				"internalType": "address payable",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "controller",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "currentStatus",
+		"outputs": [
+			{
+				"internalType": "enum Escrow.Status",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "seller",
+		"outputs": [
+			{
+				"internalType": "address payable",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+   
+            contract = new web3.eth.Contract(abi, address);
+        }
+
+        
+    
+    </script>
+
 </body>
 </html>
