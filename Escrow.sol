@@ -30,6 +30,14 @@ contract Escrow {
         _;
     }
 
+    function getCustomer() public view returns(uint256) {
+        return buyer.balance;
+    }
+
+    function getSeller() public view returns(uint256) {
+        return seller.balance;
+    }
+
     function pay() public payable onlyBuyer status(Status.PENDING_PAYMENT) {
         currentStatus = Status.PENDING_DELIVERY;
     }
