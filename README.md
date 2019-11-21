@@ -1,2 +1,2 @@
 # EscrowContract
-Smart Contract to facilitate transactions between buyer and seller
+Smart Contract to facilitate transactions between a buyer and a seller

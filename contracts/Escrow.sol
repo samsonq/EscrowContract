@@ -1,13 +1,22 @@
 pragma solidity ^0.5;
 
-contract Escrow {
+import "./common/SafeMath.sol";
+import "./common/Destructible.sol";
+import "./common/Ownable.sol";
+
+contract Escrow is Ownable, Destructible {
 
     enum Status {PENDING_PAYMENT, PENDING_DELIVERY, COMPLETED, REFUNDED}
     Status public currentStatus;
 
+    event Paid();
+    event Refunded();
+
     address payable public buyer;
     address payable public seller;
     address public controller;
+
+    using SafeMath for uint256;
 
     constructor(address payable _buyer, address payable _seller, address _controller) public {
         buyer = _buyer;
@@ -21,7 +30,7 @@ contract Escrow {
     }
 
     modifier onlyBuyer() {
-        require(msg.sender == buyer, "Only Buyer");
+        require(msg.sender == buyer || msg.sender == controller, "Only Buyer");
         _;
     }
 
@@ -39,7 +48,9 @@ contract Escrow {
     }
 
     function pay() public payable onlyBuyer status(Status.PENDING_PAYMENT) {
+        require(msg.sender.value == 0.01 ether, "Not Enough Funds!");
         currentStatus = Status.PENDING_DELIVERY;
+        emit Paid();
     }
 
     function confirmReceipt() public onlyBuyer status(Status.PENDING_DELIVERY) {
@@ -50,5 +61,6 @@ contract Escrow {
     function refund() public onlySeller status(Status.PENDING_DELIVERY) {
         currentStatus = Status.REFUNDED;
         buyer.transfer(address(this).balance);
+        emit Refunded();
     }
 }
