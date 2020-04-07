@@ -1,8 +1,8 @@
-pragma solidity ^0.5;
+pragma solidity ^0.6.1;
 
-import "./common/SafeMath.sol";
-import "./common/Destructible.sol";
-import "./common/Ownable.sol";
+import "../common/SafeMath.sol";
+import "../common/Destructible.sol";
+import "../common/Ownable.sol";
 
 contract Escrow is Ownable, Destructible {
 
